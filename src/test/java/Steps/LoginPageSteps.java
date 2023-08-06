@@ -1,7 +1,12 @@
 package Steps;
 
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+
 import BaseLayer.BaseClass;
 import PageLayer.LoginPage;
+import io.cucumber.java.AfterStep;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 
@@ -18,6 +23,19 @@ public class LoginPageSteps extends BaseClass {
 
 		loginPage = new LoginPage();
 		loginPage.loginFunctionality(prop.getProperty("uname"), prop.getProperty("pass"));
+	}
+
+	@AfterStep
+	public static void teardown(Scenario scenario) {
+
+		if (scenario.isFailed()) {
+			byte[] f = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+			scenario.attach(f, "image/png", scenario.getName());
+		} else {
+			byte[] f = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+			scenario.attach(f, "image/png", scenario.getName());
+
+		}
 	}
 
 }
